@@ -1,6 +1,8 @@
 <resources>
     <string name="app_name">Notifier</string>
 
+    <string name="accessibility_desc">Intercept notifications and decipher text.</string>
+
     <string name="hello_world">Click for a notification</string>
     <string name="action_settings">Settings</string>
 </resources>
