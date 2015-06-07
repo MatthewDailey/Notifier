@@ -11,7 +11,7 @@ import android.support.v4.content.LocalBroadcastManager;
 
 public class NotificationService extends NotificationListenerService {
 
-    private static final String LOG_TAG = "notification-service";
+    public static final String LOG_TAG = "notification-service";
     Context context;
 
     @Override
