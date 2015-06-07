@@ -9,6 +9,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Color;
+import android.media.AudioManager;
 import android.media.RingtoneManager;
 import android.preference.PreferenceActivity;
 import android.provider.Settings;
@@ -42,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
                                 .setSmallIcon(android.R.drawable.ic_menu_my_calendar)
                                 .setContentTitle("My notification")
                                 .setContentText("Hello World!")
-                                .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_RINGTONE));
+                                .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION));
                 // Creates an explicit intent for an Activity in your app
                 Intent resultIntent = new Intent(getApplicationContext(), MainActivity.class);
 
@@ -83,13 +84,30 @@ public class MainActivity extends AppCompatActivity {
         startButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                Log.i("click", "Clicked settings button.");
-                Intent intent = new Intent(MainActivity.this, NotificationService.class);
-                startService(intent);
+                logRingerMode();
+                AudioManager am = (AudioManager)getSystemService(Context.AUDIO_SERVICE);
+                am.setRingerMode(AudioManager.RINGER_MODE_SILENT);
+                logRingerMode();
             }
         });
 
         LocalBroadcastManager.getInstance(this).registerReceiver(onNotice, new IntentFilter("notification-text-msg"));
+    }
+
+    private void logRingerMode() {
+        AudioManager am = (AudioManager)getSystemService(Context.AUDIO_SERVICE);
+
+        switch (am.getRingerMode()) {
+            case AudioManager.RINGER_MODE_SILENT:
+                Log.i("MyApp", "Silent mode");
+                break;
+            case AudioManager.RINGER_MODE_VIBRATE:
+                Log.i("MyApp","Vibrate mode");
+                break;
+            case AudioManager.RINGER_MODE_NORMAL:
+                Log.i("MyApp","Normal mode");
+                break;
+        }
     }
 
     private BroadcastReceiver onNotice= new BroadcastReceiver() {

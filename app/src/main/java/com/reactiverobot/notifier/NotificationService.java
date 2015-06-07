@@ -3,6 +3,7 @@ package com.reactiverobot.notifier;
 import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
+import android.media.AudioManager;
 import android.os.Bundle;
 import android.service.notification.NotificationListenerService;
 import android.service.notification.StatusBarNotification;
@@ -53,6 +54,10 @@ public class NotificationService extends NotificationListenerService {
             LocalBroadcastManager.getInstance(context).sendBroadcast(broadcastIntent);
         }
 
+        clearNotification(sbn);
+    }
+
+    private void clearNotification(StatusBarNotification sbn) {
         NotificationManager notificationManager =
                 (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         if (sbn.isClearable()) {
