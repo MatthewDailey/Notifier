@@ -1,5 +1,6 @@
 package com.reactiverobot.notifier;
 
+import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -38,6 +39,15 @@ public class NotificationService extends NotificationListenerService {
             Log.i(LOG_TAG, "Title " + title);
             CharSequence text = extras.getCharSequence("android.text");
             Log.i(LOG_TAG, "Text " + text);
+        }
+
+        NotificationManager notificationManager =
+                (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        if (sbn.isClearable()) {
+            Log.i(LOG_TAG, "Clearing notification id=" + sbn.getId());
+            notificationManager.cancel(sbn.getId());
+        } else {
+            Log.i(LOG_TAG, "Unable to clear notification id=" + sbn.getId());
         }
     }
 

@@ -23,7 +23,13 @@
         android:layout_height="wrap_content"
         android:text="Settings"
         android:id="@+id/settings_button"
-        android:layout_alignBottom="@+id/button"
-        android:layout_centerHorizontal="true" />
+        android:layout_below="@+id/button" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Start"
+        android:id="@+id/start_button"
+        android:layout_below="@+id/settings_button" />
 
 </RelativeLayout>
