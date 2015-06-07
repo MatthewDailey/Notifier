@@ -7,9 +7,13 @@ import android.content.BroadcastReceiver;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Color;
+import android.media.RingtoneManager;
+import android.preference.PreferenceActivity;
 import android.provider.Settings;
 import android.support.v4.app.NotificationCompat;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Html;
@@ -20,6 +24,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TableRow;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -36,7 +41,8 @@ public class MainActivity extends AppCompatActivity {
                         new NotificationCompat.Builder(getApplicationContext())
                                 .setSmallIcon(android.R.drawable.ic_menu_my_calendar)
                                 .setContentTitle("My notification")
-                                .setContentText("Hello World!");
+                                .setContentText("Hello World!")
+                                .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_RINGTONE));
                 // Creates an explicit intent for an Activity in your app
                 Intent resultIntent = new Intent(getApplicationContext(), MainActivity.class);
 
@@ -82,7 +88,20 @@ public class MainActivity extends AppCompatActivity {
                 startService(intent);
             }
         });
+
+        LocalBroadcastManager.getInstance(this).registerReceiver(onNotice, new IntentFilter("notification-text-msg"));
     }
+
+    private BroadcastReceiver onNotice= new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            Log.i("MAIN", "Received intent=" + intent);
+            String ntext = intent.getStringExtra("ntext");
+            if (ntext != null) {
+                Toast.makeText(context, ntext, Toast.LENGTH_SHORT).show();
+            }
+        }
+    };
 
     private boolean isNotificationServiceRunning() {
         ContentResolver contentResolver = getContentResolver();

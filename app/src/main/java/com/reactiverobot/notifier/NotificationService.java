@@ -9,6 +9,10 @@ import android.service.notification.StatusBarNotification;
 import android.util.Log;
 import android.support.v4.content.LocalBroadcastManager;
 
+import com.google.gson.Gson;
+import com.reactiverobot.notifier.handler.NotificationTextHandler;
+import com.reactiverobot.notifier.handler.NotificationTextHandler.NotificationText;
+
 
 public class NotificationService extends NotificationListenerService {
 
@@ -26,8 +30,9 @@ public class NotificationService extends NotificationListenerService {
         String pack = sbn.getPackageName();
         Log.i(LOG_TAG, "Package " + pack);
 
+        String ticker = null;
         if (sbn.getNotification().tickerText != null) {
-            String ticker = sbn.getNotification().tickerText.toString();
+             ticker = sbn.getNotification().tickerText.toString();
             Log.i(LOG_TAG, "Ticker " + ticker);
         } else {
             Log.i(LOG_TAG, "No ticker text.");
@@ -39,6 +44,13 @@ public class NotificationService extends NotificationListenerService {
             Log.i(LOG_TAG, "Title " + title);
             CharSequence text = extras.getCharSequence("android.text");
             Log.i(LOG_TAG, "Text " + text);
+
+            NotificationText notificationText = new NotificationText(ticker, title, text.toString(), pack);
+            Gson gson = new Gson();
+
+            Intent broadcastIntent = new Intent("notification-text-msg");
+            broadcastIntent.putExtra("ntext", gson.toJson(notificationText));
+            LocalBroadcastManager.getInstance(context).sendBroadcast(broadcastIntent);
         }
 
         NotificationManager notificationManager =
