@@ -79,4 +79,7 @@ public class MainActivityTest {
         assertEquals("test text", ShadowToast.getTextOfLatestToast().toString());
     }
 
+
+    // How to test SharedPreferences
+    // http://stackoverflow.com/questions/9748417/providing-test-data-for-sharedpreferences-for-robolectric
 }
