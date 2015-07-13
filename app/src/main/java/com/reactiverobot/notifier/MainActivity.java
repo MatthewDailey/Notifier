@@ -23,9 +23,12 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import java.util.Random;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -33,6 +36,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        final EditText nameInput = (EditText) findViewById(R.id.nameInput);
 
         Button button = (Button) findViewById(R.id.button);
         button.setOnClickListener(new View.OnClickListener() {
@@ -42,7 +47,8 @@ public class MainActivity extends AppCompatActivity {
                         new NotificationCompat.Builder(getApplicationContext())
                                 .setSmallIcon(android.R.drawable.ic_menu_my_calendar)
                                 .setContentTitle("My notification")
-                                .setContentText("Hello World!")
+                                .setContentText("Hello World! " + nameInput.getText().toString())
+                                .setPriority(NotificationCompat.PRIORITY_HIGH)
                                 .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION));
                 // Creates an explicit intent for an Activity in your app
                 Intent resultIntent = new Intent(getApplicationContext(), MainActivity.class);
@@ -65,7 +71,7 @@ public class MainActivity extends AppCompatActivity {
                 NotificationManager mNotificationManager =
                         (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
                 // mId allows you to update the notification later on.
-                int mId = 111;
+                int mId = new Random().nextInt();
                 mNotificationManager.notify(mId, mBuilder.build());
             }
         });
